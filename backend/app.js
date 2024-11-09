@@ -56,21 +56,21 @@ async function journey_details(train){
     }
 }
 
-async function booking (seat,train){
-    try{
-        const [free_seat] = await conn.query(`select ${seat} from coaches where trainNo= ?`,[train]);
-        const [curr_seat] = await conn.query(`select ${seat} from berth where trainNo=? AND ${seat} IS NOT NULL`,[train]);
-        const [berth] = await conn.query(`select berth from berth where trainNo=? AND ${seat} IS NOT NULL`,[train]);
+async function booking(seat, train) {
+    try {
+        const [free_seat] = await conn.query(`select ${seat} from coaches where trainNo= ?`, [train]);
+        const [curr_seat] = await conn.query(`select ${seat} from berth where trainNo=? AND ${seat} IS NOT NULL`, [train]);
+        const [berth] = await conn.query(`select berth from berth where trainNo=? AND ${seat} IS NOT NULL`, [train]);
         var coach = free_seat[0];
         var curr = curr_seat[0];
         var berthNo = berth[0];
-        var new_freeSeat=0;
-        var new_CurSeat=0;
-        var ticket=0;
-        for (const key in coach){
+        var new_freeSeat = 0;
+        var new_CurSeat = 0;
+        var ticket = 0;
+        for (const key in coach) {
             new_freeSeat = coach[key];
-          }
-        if(new_freeSeat!==0){
+        }
+        if (new_freeSeat !== 0) {
             for (const key in curr) {
                 new_CurSeat = curr[key];
             }
@@ -78,22 +78,19 @@ async function booking (seat,train){
                 ticket = berthNo[key];
             }
 
-            new_freeSeat=new_freeSeat-1;
-            new_CurSeat=new_CurSeat+1;
-            
-            var log = ticket+"/"+new_CurSeat;
+            new_freeSeat = new_freeSeat - 1;
+            new_CurSeat = new_CurSeat + 1;
+
+            var log = ticket + "/" + new_CurSeat;
             console.log(log);
-              const [update] = await conn.query(`update coaches SET ${seat} = ? where trainNo = ?`,[new_freeSeat,train]);
-              const[update2] = await conn.query(`update berth SET ${seat}=? where trainNo=? AND ${seat} IS NOT NULL`,[new_CurSeat,train]);
+            const [update] = await conn.query(`update coaches SET ${seat} = ? where trainNo = ?`, [new_freeSeat, train]);
+            const [update2] = await conn.query(`update berth SET ${seat}=? where trainNo=? AND ${seat} IS NOT NULL`, [new_CurSeat, train]);
             return log;
 
-        }
-        else{
+        } else {
             return 0;
         }
-     }
-
-    catch(err){
+    } catch (err) {
         console.log(err);
     }
 }
@@ -161,25 +158,30 @@ app.get("/search", async (req,res)=>{
 let x ={};
 var berth;
 
-app.post("/booking",async (req,res)=>{
-    const {seat_type,tr,user_info}= req.body;
-    berth = await booking(seat_type,tr);
+app.post("/booking", async (req, res) => {
+    const { seat_type, tr, user_info } = req.body;
+    berth = await booking(seat_type, tr);
     var journey = await journey_details(tr);
-    x = {
-        name:user_info.username,
-        email:user_info.email,
-        train:tr,
-        trainName:journey[0].TraiName,
-        source:journey[0].Source,
-        destination:journey[0].Destination,
-        departure:journey[0].DepartureTime,
-        arrival:journey[0].ArrivalTime,
-        seat:seat_type,
-        seatno:berth
+    if (journey && journey.length > 0) {
+        x = {
+            name: user_info.username,
+            email: user_info.email,
+            train: tr,
+            trainName: journey[0].TrainName, // Ensure this matches the column name in the database
+            source: journey[0].Source,
+            destination: journey[0].Destination,
+            departure: journey[0].DepartureTime,
+            arrival: journey[0].ArrivalTime,
+            seat: seat_type,
+            seatno: berth
+        }
+        console.log(x);
+        res.json(x); // Send the data to the frontend
+    } else {
+        console.log("Journey details not found");
+        res.status(404).json({ error: "Journey details not found" });
     }
-    console.log(x);
-
-})
+});
 
 app.get("/get_booking", async (req, res) => {
     console.log(x);
