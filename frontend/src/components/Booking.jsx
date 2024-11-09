@@ -2,19 +2,14 @@ import { useLoaderData } from "react-router-dom";
 import { styled } from "styled-components";
 
 function Booking() {
-  //t will have the data returned to it from the above loader function
-  let {data} = useLoaderData();
+  let { data } = useLoaderData();
   console.log(data);
 
-  return(
+  return (
     <Container>
-      {/* <div className="User">
-        <h1>Passenger : {data.name}</h1>
-        <h2>Contact : {data.email}</h2>
-      </div> */}
       <div className="journey">
-        <h2 className="details">Train No : {data.train} <span>{data.trainName}</span></h2> 
-        <h2>Booked From <br />{data.source}</h2>
+        <h2 className="details">Train No : {data.train} <span>Train Name : {data.trainName}</span></h2> 
+        <h2>Booked<br/>From :{data.source}</h2>
         <h2>TO: {data.destination}</h2>
         <h2>Departure: {data.departure}</h2>
         <h2>Arrival : {data.arrival}</h2>
