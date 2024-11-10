@@ -1,12 +1,18 @@
 import { useLoaderData } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 import { styled } from "styled-components";
-// const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://railway-booking-gz6f.onrender.com";
 
-// export const loader = async () => {
-//   let resp = await axios.get(`${backendUrl}/get_booking`);
-//   return resp;
-// };
+export const loader = async () => {
+  try {
+    let resp = await axios.get(`${backendUrl}/get_booking`);
+    return resp;
+  } catch (error) {
+    console.error("Failed to fetch booking details:", error);
+    throw new Error("Could not fetch booking details. Please try again later.");
+  }
+};
+
 
 function Booking() {
   let { data } = useLoaderData();
