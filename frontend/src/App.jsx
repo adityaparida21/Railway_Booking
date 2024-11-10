@@ -1,3 +1,5 @@
+import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import {
@@ -35,7 +37,10 @@ const router = createBrowserRouter([
       {
         path: "booking_details",
         element: <Booking />,
-        loader: Booking.loader,
+        loader: async () => {
+          let resp = await axios.get(`${backendUrl}get_booking`)
+          return resp;
+        }
       },
     ],
   },
