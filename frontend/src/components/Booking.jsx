@@ -1,5 +1,12 @@
 import { useLoaderData } from "react-router-dom";
+import axios from "axios";
 import { styled } from "styled-components";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+export const loader = async () => {
+  let resp = await axios.get(`${backendUrl}/get_booking`);
+  return resp;
+};
 
 function Booking() {
   let { data } = useLoaderData();

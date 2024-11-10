@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Login() {
   const nav = useNavigate();
@@ -51,7 +52,7 @@ function Login() {
     e.preventDefault();
     if (validation()) {
       const { username, password } = value;
-      const { data } = await axios.post("http://localhost:5000/login", {
+      const { data } = await axios.post(`${backendUrl}/login`, {
         username,
         password,
       });

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Home() {
   var islogged;
@@ -44,7 +45,7 @@ function Home() {
     check();
     if (islogged !== 0) {
       const { to, from } = value;
-      const { data } = await axios.post("http://localhost:5000/form", {
+      const { data } = await axios.post(`${backendUrl}/form`, {
         to,
         from,
       });

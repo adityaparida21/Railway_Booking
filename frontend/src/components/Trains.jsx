@@ -2,9 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {  useLoaderData, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const loader = async () => {
-  let resp = await axios.get("http://localhost:5000/search");
+  let resp = await axios.get(`${backendUrl}/search`);
   return resp;
 };
 
@@ -28,7 +29,7 @@ const Trains = () => {
 
   async function Submit(lala) {
     console.log(lala);
-    let resp = await axios.post("http://localhost:5000/booking", lala);
+    let resp = await axios.post(`${backendUrl}/booking`, lala);
     if (resp !== null) {
       return 1;
     }
