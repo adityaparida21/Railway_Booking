@@ -1,6 +1,7 @@
 # Railway Booking System 🚂
 
 A full-stack web application for booking railway tickets with real-time seat availability tracking and user management. The project uses React for the frontend, Express.js for the backend, and MySQL for the database.
+![1](https://github.com/user-attachments/assets/aa06bfa6-9e25-44af-8129-40875aff467a)
 
 ## 🌟 Live Demo
 
