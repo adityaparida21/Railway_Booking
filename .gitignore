@@ -2,3 +2,4 @@ node_modules
 *py
 *docx
 railway_schema.sql
+.env
