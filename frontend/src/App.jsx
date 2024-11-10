@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         path: "booking_details",
         element: <Booking />,
         loader: async () => {
-          let resp = await axios.get(`${backendUrl}get_booking`)
+          let resp = await axios.get(`${backendUrl}/get_booking`)
           return resp;
         }
       },
