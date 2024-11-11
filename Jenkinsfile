@@ -2,16 +2,40 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Frontend Build') {
             steps {
-                sh 'echo building'
+                dir('frontend') {
+                    sh 'echo "Building frontend"'
+                    sh 'npm install'
+                    sh 'cp .env.example .env'
+                    sh 'npm run build'
+                }
             }
         }
+
+        stage('Backend Build') {
+            steps {
+                dir('backend') {
+                    sh 'echo "Building backend"'
+                    sh 'npm install'
+                    sh 'cp .env.example .env'
+                }
+            }
+        }
+
         stage('Test') {
             steps {
-                sh 'echo testing'
+                dir('frontend') {
+                    sh 'echo "Testing frontend"'
+                    sh 'npm run test'
+                }
+                dir('backend') {
+                    sh 'echo "Testing backend"'
+                    sh 'npm run test'
+                }
             }
         }
+
         stage('Deploy') {
             steps {
                 sh 'echo deploying'
@@ -19,3 +43,4 @@ pipeline {
         }
     }
 }
+
