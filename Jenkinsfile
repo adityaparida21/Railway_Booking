@@ -39,18 +39,18 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                parallel {
-                    'Frontend Tests': {
+                parallel(
+                    "Frontend Tests": {
                         dir('frontend') {
                             sh 'npm run test'
                         }
                     },
-                    'Backend Tests': {
+                    "Backend Tests": {
                         dir('backend') {
                             sh 'npm run test'
                         }
                     }
-                }
+                )
             }
         }
         
