@@ -1,72 +1,43 @@
 pipeline {
     agent any
-    
-    environment {
-        NODE_HOME = '/usr/local/bin/node'
-        PATH = "$NODE_HOME/bin:$PATH"
-    }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-        
-        stage('Install Frontend Dependencies') {
+        stage('Frontend Build') {
             steps {
                 dir('frontend') {
+                    sh 'echo "Building frontend"'
                     sh 'npm install'
-                }
-            }
-        }
-        
-        stage('Build Frontend') {
-            steps {
-                dir('frontend') {
                     sh 'npm run build'
                 }
             }
         }
-        
-        stage('Install Backend Dependencies') {
+
+        stage('Backend Build') {
             steps {
                 dir('backend') {
+                    sh 'echo "Building backend"'
                     sh 'npm install'
                 }
             }
         }
-        
-        stage('Run Tests') {
+
+        stage('Test') {
             steps {
-                parallel(
-                    "Frontend Tests": {
-                        dir('frontend') {
-                            sh 'npm run test'
-                        }
-                    },
-                    "Backend Tests": {
-                        dir('backend') {
-                            sh 'npm run test'
-                        }
-                    }
-                )
+                dir('frontend') {
+                    sh 'echo "Testing frontend"'
+                    sh 'npm run test'
+                }
+                dir('backend') {
+                    sh 'echo "Testing backend"'
+                    sh 'npm run test'
+                }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 sh 'echo deploying'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build, test, and deployment completed successfully.'
-        }
-        failure {
-            echo 'Build, test, or deployment failed.'
         }
     }
 }
