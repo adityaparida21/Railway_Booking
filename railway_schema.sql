@@ -109,3 +109,22 @@ INSERT INTO `customers` VALUES
   (1, 'John Doe', 'password123', 'john@example.com'),
   (2, 'Jane Smith', 'password456', 'jane@example.com'),
   (3, 'Bob Wilson', 'password789', 'bob@example.com');
+
+
+CREATE TABLE `transaction` (
+  `TransactionID` int NOT NULL AUTO_INCREMENT,
+  `CustomerID` int NOT NULL,
+  `CustomerEmail` varchar(100) NOT NULL,
+  `Train` varchar(100) NOT NULL,
+  `TrainName` varchar(100) NOT NULL,
+  `Source` varchar(100) NOT NULL,
+  `Destination` varchar(100) NOT NULL,
+  `Departure` time NOT NULL,
+  `Arrival` time NOT NULL,
+  `Coach` varchar(100) NOT NULL,
+  `SeatNo` varchar(100) NOT NULL,
+  `Date` date NOT NULL,
+  PRIMARY KEY (`TransactionID`),
+  KEY `idx_transaction_customerid` (`CustomerID`),
+  KEY `idx_transaction_customeremail` (`CustomerEmail`)
+)
