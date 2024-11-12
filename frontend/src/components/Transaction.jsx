@@ -23,6 +23,7 @@ const TransactionContainer = styled.div`
 
 function Trans() {
   const data = useLoaderData();
+  console.log("Transaction data:", data); // Add this
   const nav = useNavigation();
 
   if (nav.state === "loading") {
@@ -30,6 +31,17 @@ function Trans() {
   }
 
   const data2 = data.data || [];
+  console.log("Mapped data:", data2); // Add this
+
+  if (data2.length === 0) {
+    return (
+      <TransactionsWrapper>
+        <h1>Transactions</h1>
+        <p>No transactions found</p>
+      </TransactionsWrapper>
+    );
+  }
+
   const transactionItems = data2.map((item, index) => (
     <div key={index} className="transaction-item">
       <div>
@@ -51,9 +63,7 @@ function Trans() {
           <tr>
             <td>{item.Source}</td>
             <td>{item.Destination}</td>
-            <td>
-              {item.SeatNo}  {item.Coach}
-            </td>
+            <td>{item.SeatNo} {item.Coach}</td>
             <td>{item.Date}</td>
           </tr>
         </tbody>

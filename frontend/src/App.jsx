@@ -31,10 +31,18 @@ const router = createBrowserRouter([
         path: "transactions",
         element: <Transaction />,
         loader: async () => {
-          const customer = localStorage.getItem("User");
-          let response = await axios.post(`${backendUrl}/transaction`, { customer });
-          return response.data;
-        },
+          try {
+            const customer = localStorage.getItem("User");
+            if (!customer) {
+              return { data: [] };
+            }
+            const response = await axios.post(`${backendUrl}/transaction`, { customer });
+            return { data: response.data };
+          } catch (err) {
+            console.error("Transaction loading error:", err);
+            return { data: [] };
+          }
+        }
       },
       {
         path: "ticket",
