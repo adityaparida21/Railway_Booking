@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  nav {
+    background-color: #0c0c16;
+    display: flex;
+    min-height: 5rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2.5rem;
+  }
+  
+  .logo h1 {
+    font-size: 3rem;
+    letter-spacing: 0.9rem;
+    color: white;
+    transition: 0.45s ease-out;
+  }
+  
+  .logo h1:hover {
+    color: red;
+    cursor: pointer;
+    letter-spacing: 1.5rem;
+  }
+  
+  ul {
+    list-style: none;
+    display: flex;
+    min-width: 18rem;
+    gap:15px;
+    font-size: 1.5rem;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+  }
+  
+  li {
+    transition: all 0.45s;
+  }
+  
+  ul li:hover {
+    color: red;
+    cursor: pointer;
+  }
+  
+  .logout {
+    color: white;
+    font-size: 1.5rem;
+    transition: 0.45s all;
+    list-style: none;
+  }
+  
+  .logout:hover {
+    cursor: pointer;
+    color: red;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0.2rem;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: red;
+  }
+  

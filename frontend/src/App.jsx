@@ -7,9 +7,11 @@ import {
   Register,
   Home,
   Trains,
-  Booking,
   Base,
+  Transaction,
+  Ticket,
 } from "./components/index";
+
 import { loader as TrainInfo } from "./components/Trains";
 
 const router = createBrowserRouter([
@@ -26,6 +28,19 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: "transactions",
+        element: <Transaction />,
+        loader: async () => {
+          const customer = localStorage.getItem("User");
+          let response = await axios.post(`${backendUrl}/transaction`, { customer });
+          return response.data;
+        },
+      },
+      {
+        path: "ticket",
+        element: <Ticket />,
+      },
+      {
         path: "search",
         element: <Home />,
       },
@@ -36,10 +51,10 @@ const router = createBrowserRouter([
       },
       {
         path: "booking_details",
-        element: <Booking />,
+        element: <Ticket />,
         loader: async () => {
           let resp = await axios.get(`${backendUrl}/get_booking`)
-          return resp;
+          return { data: resp.data };
         }
       },
     ],

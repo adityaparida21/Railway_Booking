@@ -11,6 +11,18 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+//Loggin the Time
+const now = new Date();
+
+// Get current date in YYYY-MM-DD format
+const date = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+// Get current time in HH:MM:SS format
+const time = now.toTimeString().split(" ")[0]; // HH:MM:SS
+
+console.log(`Current Date: ${date}`);
+console.log(`Current Time: ${time}`);
+
 // Use the environment variables to create the database connection
 const conn = mysql.createPool({
     host: process.env.DB_HOST,
@@ -191,10 +203,17 @@ let x = {};
 var berth;
 
 app.post("/booking", async (req, res) => {
-    const { seat_type, tr, user_info } = req.body;
-    berth = await booking(seat_type, tr);
-    var journey = await journey_details(tr);
-    if (journey && journey.length > 0) {
+    try {
+        console.log("Request body:", req.body);
+        const { seat_type, tr, user_info } = req.body;
+        console.log("Train number:", tr);
+        berth = await booking(seat_type, tr);
+        var journey = await journey_details(tr);
+
+        if (journey.length === 0) {
+            return res.status(404).json({ error: "Train not found" });
+        }
+
         x = {
             name: user_info.username,
             email: user_info.email,
@@ -206,18 +225,36 @@ app.post("/booking", async (req, res) => {
             arrival: journey[0].ArrivalTime,
             seat: seat_type,
             seatno: berth
-        }
-        console.log(x);
-        res.json(x);
-    } else {
-        console.log("Journey details not found");
-        res.status(404).json({ error: "Journey details not found" });
+        };
+
+        // Insert transaction details into DB
+        const [query] = await conn.query(
+            `INSERT INTO transaction (CustomerID, CustomerEmail, Train, TrainName, Source, 
+            Destination, Departure, Arrival, Coach, SeatNo, Date) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [user_info.Id, user_info.email, tr, journey[0].TrainName, journey[0].Source, 
+            journey[0].Destination, journey[0].DepartureTime, journey[0].ArrivalTime, 
+            seat_type, berth, date]
+        );
+
+        res.status(200).json(x);
+    } catch (error) {
+        console.error("Booking error:", error);
+        res.status(500).json({ error: "Booking failed" });
     }
 });
 
 app.get("/get_booking", async (req, res) => {
     console.log(x);
     res.send(x);
+});
+
+app.post("/transaction", async (req, res) => {
+    const { customer } = req.body;
+    const userData = JSON.parse(customer);
+    const ID = userData.Id;
+    const [data] = await conn.query(`SELECT * FROM transaction WHERE CustomerID = ?`, [ID]);
+    res.send(data);
 });
 
 app.listen(5000, () => {

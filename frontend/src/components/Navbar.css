@@ -18,6 +18,16 @@ nav {
   letter-spacing: 0.9rem;
   color: white;
   transition: 0.45s linear;
+ 
+}
+
+.logo a {
+  text-decoration: none; /* Removes the underline */
+  color: inherit;        /* Keeps the color the same as the surrounding text */
+}
+
+.logo a:hover {
+  color: #007BFF;        /* Optional: Adds a hover effect */
 }
 
 .logo h1:hover {
@@ -33,10 +43,12 @@ ul {
   justify-content: space-around;
   align-items: center;
   color: white;
+  gap: 1rem;
 }
 
 li {
   transition: all 0.45s;
+  padding: 0 1rem;
 }
 
 ul li:hover {
@@ -49,6 +61,7 @@ ul li:hover {
   font-size: 1.5rem;
   transition: 0.45s all;
   list-style: none;
+  padding: 0 1rem;
 }
 
 .logout:hover {
