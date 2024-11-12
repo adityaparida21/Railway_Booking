@@ -15,6 +15,7 @@ A full-stack web application for booking railway tickets with real-time seat ava
 - 📱 Responsive design
 - 🎫 Ticket booking and confirmation
 - 👥 User profile management
+- 🧾 Transaction History
 
 ## 🛠️ Tech Stack
 
@@ -118,9 +119,9 @@ PORT=5000
 - POST `/form` - Search trains
 - GET `/search` - Get available trains
 
-### Booking
-- POST `/booking` - Book ticket
-- GET `/get_booking` - Get booking details
+### Transactions
+- POST `/transaction` - Get user's booking history
+- GET `/get_booking` - Get latest booking details
 
 ## 🔐 Database Schema
 
@@ -129,6 +130,7 @@ PORT=5000
 2. `train` - Train details
 3. `coaches` - Coach availability
 4. `berth` - Berth allocation
+5. `transaction` - Booking history tracking
 
 ### Database Setup
 
