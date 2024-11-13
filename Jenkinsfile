@@ -2,51 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+        stage('Build') {
             steps {
-                checkout scm
+                sh 'echo Building application...'
+                sh 'npm install'  // Install dependencies
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Test') {
             steps {
-                sh 'npm install --prefix frontend'
-                sh 'npm install --prefix backend'
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                sh 'npm run build --prefix frontend'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                parallel (
-                    'Frontend Tests': {
-                        sh 'npm run test --prefix frontend'
-                    },
-                    'Backend Tests': {
-                        sh 'npm run test --prefix backend'
-                    }
-                )
+                sh 'echo Running tests...'
+                sh 'npm run test'  // Run tests
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo deploying'
+                sh 'echo Deploying application...'
+                // Add deployment command here (e.g., SSH to server and deploy)
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build, test, and deployment completed successfully.'
-        }
-        failure {
-            echo 'Build, test, or deployment failed.'
         }
     }
 }
