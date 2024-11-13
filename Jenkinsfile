@@ -4,22 +4,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo Building application...'
-                sh 'npm install'  // Install dependencies
+                sh 'echo Building frontend...'
+                dir('frontend') {
+                    sh 'npm install'  // Install frontend dependencies
+                    sh 'npm run build'  // Build frontend
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh 'echo Running tests...'
-                sh 'npm run test'  // Run tests
+                sh 'echo Testing frontend...'
+                dir('frontend') {
+                    sh 'npm run test'  // Run frontend tests
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo Deploying application...'
-                // Add deployment command here (e.g., SSH to server and deploy)
+                sh 'echo Deploying frontend...'
+                // Add deployment commands for frontend here
+                // Example: 
+                // sh 'deploy-frontend-command'
             }
         }
     }
